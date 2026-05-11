@@ -9,7 +9,7 @@ const STAGES = [
   { id: 'output',     label: 'Output',      icon: '🎤', color: '#444441', bg: '#F1EFE8' },
 ]
 
-const LESSON_1 = {
+export const LESSON_1 = {
   week: 1,
   theme: "Who are you today?",
   subtitle: "Talking about routines and habits",
@@ -317,10 +317,10 @@ function OutputStage({ data, profile }) {
   )
 }
 
-export default function LessonPage({ lesson, profile, isTeacher, sessionId, onBack }) {
+export default function LessonPage({ lessonData, lesson, profile, isTeacher, sessionId, onBack }) {
   const [stage, setStage] = useState(0)
   const [syncing, setSyncing] = useState(false)
-  const L = LESSON_1
+  const L = lessonData || LESSON_1
 
   // Teacher advances stage → sync to DB
   async function advanceStage(idx) {
@@ -399,4 +399,200 @@ export default function LessonPage({ lesson, profile, isTeacher, sessionId, onBa
       </div>
     </div>
   )
+}
+
+// ─── LESSON 0 DATA ───────────────────────────────────────────────
+export const LESSON_0_W1 = {
+  week: -2,
+  theme: "Who am I? Who are you?",
+  subtitle: "Verb to be · Pronouns · Possessives",
+  stages: {
+    context: {
+      title: "Talking about yourself",
+      text: "Every conversation starts with identity — who you are, where you're from, what you do. These are the most basic and most important building blocks of English communication. Let's make sure they're solid.",
+      image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
+      imageCaption: "Every great conversation starts with 'Hello, I'm...'",
+      audioText: "Every conversation starts with identity — who you are, where you're from, what you do.",
+      discussion: [
+        "How do you usually introduce yourself in English?",
+        "What's the first thing you say when you meet someone new?",
+        "Is it different introducing yourself formally vs. informally?",
+      ]
+    },
+    vocab: {
+      title: "Pronouns & verb to be",
+      words: [
+        { word: "I am / I'm",     phonetic: "/aɪ æm/",    def: "first person singular", example: "I'm a teacher.", emoji: "👤" },
+        { word: "You are / You're", phonetic: "/juː ɑːr/", def: "second person",          example: "You're from Brazil.", emoji: "👥" },
+        { word: "He is / He's",   phonetic: "/hiː ɪz/",   def: "third person male",       example: "He's my colleague.", emoji: "👨" },
+        { word: "She is / She's", phonetic: "/ʃiː ɪz/",   def: "third person female",     example: "She's a student.", emoji: "👩" },
+        { word: "We are / We're", phonetic: "/wiː ɑːr/",  def: "first person plural",     example: "We're in an online class.", emoji: "👫" },
+        { word: "They are / They're", phonetic: "/ðeɪ ɑːr/", def: "third person plural",  example: "They're from different countries.", emoji: "👨‍👩‍👧" },
+      ]
+    },
+    grammar: {
+      title: "Verb to be — positive, negative, question",
+      explanation: "The verb 'to be' is the most important verb in English. It connects a subject to information about that subject. It has three forms in the present: am (I), is (he/she/it), are (you/we/they).",
+      examples: [
+        { simple: "I am Brazilian.",           continuous: "I'm not American.",         note: "Positive → Negative: add 'not'" },
+        { simple: "She is a teacher.",         continuous: "Is she a teacher? Yes, she is.", note: "Statement → Question: invert subject/verb" },
+        { simple: "My name is Danilelly.",     continuous: "What is your name?",          note: "Possessives: my, your, his, her, our, their" },
+      ],
+      exercises: [
+        { q: "_____ a student. (I)", a: ["I'm"] },
+        { q: "_____ she from São Paulo? Yes, _____ is.", a: ["Is", "she"] },
+        { q: "What _____ your name? _____ name is Danilelly.", a: ["is", "My"] },
+      ]
+    },
+    task: {
+      title: "Real task — introduce yourself",
+      instructions: "Introduce yourself completely. Speak for at least 1 minute. Cover:",
+      prompts: [
+        "Your name and where you're from",
+        "What you do (work/study)",
+        "One thing you're good at",
+        "One thing about your personality ('I'm quite...' / 'I'm not very...')",
+        "One thing about someone close to you (use he's/she's/they're)",
+      ],
+      usefulPhrases: [
+        "I'm originally from...", "I work as a...", "I'm quite...",
+        "I'm not very...", "My ... is/are ...", "He's / She's ...",
+      ]
+    },
+    output: {
+      title: "Record — introduce yourself",
+      prompt: "Pretend you're meeting someone for the first time online. Introduce yourself naturally — who you are, where you're from, what you do, and something about your personality.",
+      tips: ["Use I'm, I'm not, Are you...?", "Include at least one he's/she's/they're", "Speak for 60–90 seconds", "Don't read — just talk!"]
+    }
+  }
+}
+
+export const LESSON_0_W2 = {
+  week: -1,
+  theme: "What's in your world?",
+  subtitle: "There is/are · Articles · Prepositions of place",
+  stages: {
+    context: {
+      title: "Describing your space",
+      text: "Where are you right now? What's around you? Describing places, rooms, and objects is one of the most practical skills in English — useful in real life, on the phone, in meetings, and everywhere in between.",
+      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80",
+      imageCaption: "What can you see from where you are right now?",
+      audioText: "Where are you right now? What's around you? Describing places, rooms, and objects is one of the most practical skills in English.",
+      discussion: [
+        "Describe the room you're in right now in English.",
+        "What's on your desk or table at the moment?",
+        "Is your home/workspace organized or messy?",
+      ]
+    },
+    vocab: {
+      title: "Prepositions of place",
+      words: [
+        { word: "on",      phonetic: "/ɒn/",    def: "touching a surface",        example: "The book is on the table.", emoji: "📖" },
+        { word: "in",      phonetic: "/ɪn/",    def: "inside something",          example: "The keys are in my bag.", emoji: "🔑" },
+        { word: "under",   phonetic: "/ˈʌndər/",def: "below something",           example: "The cat is under the chair.", emoji: "🐱" },
+        { word: "next to", phonetic: "/nekst tuː/", def: "beside, at the side of", example: "The lamp is next to the sofa.", emoji: "💡" },
+        { word: "between", phonetic: "/bɪˈtwiːn/",def: "in the middle of two things", example: "The café is between the bank and the pharmacy.", emoji: "🏪" },
+        { word: "behind",  phonetic: "/bɪˈhaɪnd/",def: "at the back of",          example: "There's a garden behind the house.", emoji: "🌳" },
+      ]
+    },
+    grammar: {
+      title: "There is / There are + articles",
+      explanation: "Use 'there is' (singular) and 'there are' (plural) to say something exists or to describe what is in a place. Articles: 'a/an' for singular indefinite, 'the' for specific things, no article for plural/general.",
+      examples: [
+        { simple: "There is a laptop on the desk.",    continuous: "Is there a printer? No, there isn't.", note: "Singular: there is / there isn't" },
+        { simple: "There are three windows.",          continuous: "Are there any chairs? Yes, there are.", note: "Plural: there are / there aren't" },
+        { simple: "There's a café near my house.",     continuous: "There isn't a parking lot.", note: "Contractions are natural in speech" },
+      ],
+      exercises: [
+        { q: "_____ a big window in my living room. (positive)", a: ["There's / There is"] },
+        { q: "_____ any plants in your office? Yes, _____ two.", a: ["Are there", "there are"] },
+        { q: "The remote control is _____ the sofa. (below it)", a: ["under"] },
+      ]
+    },
+    task: {
+      title: "Real task — describe your space",
+      instructions: "Describe the room you're in right now, or your favourite room at home. Use there is/are and prepositions:",
+      prompts: [
+        "What's in the room? (furniture, objects, technology)",
+        "Where exactly are things? (use prepositions)",
+        "Is there anything unusual or special about the space?",
+        "What isn't there that you wish there was?",
+      ],
+      usefulPhrases: [
+        "There's a ... on/in/under...", "There are ... next to...",
+        "On the left there's...", "In the corner there's...",
+        "There isn't any...", "I wish there was a...",
+      ]
+    },
+    output: {
+      title: "Record — describe your space",
+      prompt: "Give me a virtual tour of the room you're in right now. Describe what you can see — furniture, objects, where everything is. Use there is/are and prepositions of place.",
+      tips: ["Use there is/are at least 5 times", "Include at least 3 different prepositions", "Speak for 60–90 seconds", "Look around and describe what you actually see!"]
+    }
+  }
+}
+
+export const LESSON_0_W3 = {
+  week: 0,
+  theme: "Every day, every week",
+  subtitle: "Adverbs of frequency · Simple questions · Short answers",
+  stages: {
+    context: {
+      title: "How often do you...?",
+      text: "Talking about how often we do things is essential for everyday conversation. Do you always have breakfast? Do you ever work late? These patterns come up constantly — in small talk, at work, with friends.",
+      image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80",
+      imageCaption: "Some things we do every day. Others, almost never.",
+      audioText: "Talking about how often we do things is essential for everyday conversation.",
+      discussion: [
+        "What do you always do before bed?",
+        "What do you never do in the morning?",
+        "How often do you speak English outside of class?",
+      ]
+    },
+    vocab: {
+      title: "Adverbs of frequency",
+      words: [
+        { word: "always",    phonetic: "/ˈɔːlweɪz/", def: "100% of the time",    example: "I always check my phone in the morning.", emoji: "✅" },
+        { word: "usually",   phonetic: "/ˈjuːʒuəli/", def: "most of the time (~80%)", example: "I usually have coffee for breakfast.", emoji: "☕" },
+        { word: "often",     phonetic: "/ˈɒfən/",     def: "many times (~60%)",   example: "I often work late on Thursdays.", emoji: "💼" },
+        { word: "sometimes", phonetic: "/ˈsʌmtaɪmz/",def: "some of the time (~40%)", example: "I sometimes skip lunch.", emoji: "🤷" },
+        { word: "rarely",    phonetic: "/ˈreəli/",    def: "not often (~20%)",    example: "I rarely watch TV.", emoji: "📺" },
+        { word: "never",     phonetic: "/ˈnevər/",    def: "0% of the time",      example: "I never drink alcohol.", emoji: "🚫" },
+      ]
+    },
+    grammar: {
+      title: "Simple questions + short answers",
+      explanation: "To make Yes/No questions in the Present Simple, use Do/Does before the subject. For Wh- questions (what, where, when, who, how), put the question word first. Short answers avoid repetition — they're essential for natural conversation.",
+      examples: [
+        { simple: "You exercise every day.",       continuous: "Do you exercise every day? Yes, I do. / No, I don't.", note: "Yes/No question with Do/Does" },
+        { simple: "She always drinks coffee.",     continuous: "Does she always drink coffee? Yes, she does.", note: "He/She/It → Does (not Do)" },
+        { simple: "I often work from home.",       continuous: "How often do you work from home?", note: "Wh- question with How often" },
+      ],
+      exercises: [
+        { q: "_____ you usually wake up before 7am? Yes, I _____.", a: ["Do", "do"] },
+        { q: "How _____ does she check her email? She _____ checks it.", a: ["often", "always"] },
+        { q: "He never _____ (be) late. _____ he ever late? No, he _____.", a: ["is", "Is", "isn't"] },
+      ]
+    },
+    task: {
+      title: "Real task — your weekly rhythm",
+      instructions: "Talk about your typical week using adverbs of frequency. Try to answer these questions naturally:",
+      prompts: [
+        "What do you always / usually do on weekday mornings?",
+        "What do you often / sometimes do in the evenings?",
+        "What do you rarely or never do? (and why?)",
+        "How often do you do something just for yourself — a hobby, exercise, anything?",
+      ],
+      usefulPhrases: [
+        "I always...", "I usually...", "I often...",
+        "I sometimes...", "I rarely...", "I never...",
+        "How often do you...?", "Do you ever...?",
+      ]
+    },
+    output: {
+      title: "Record — your weekly rhythm",
+      prompt: "Tell me about your typical week. How often do you do different things — work, exercise, cook, relax, see friends? Use adverbs of frequency and try to ask me a question at the end!",
+      tips: ["Use at least 4 different frequency adverbs", "Include one negative sentence (never/rarely)", "Ask a question at the end", "Speak for 60–90 seconds"]
+    }
+  }
 }

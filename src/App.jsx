@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './pages/Login'
 import TeacherDashboard from './pages/TeacherDashboard'
-import LessonPage from './pages/LessonPage'
+import LessonRouter from './pages/LessonRouter'
 import StudentHome from './pages/StudentHome'
 import StudentOutput from './pages/StudentOutput'
 import ReviewPage from './pages/ReviewPage'
@@ -70,7 +70,7 @@ export default function App() {
 
   if (profile.role === 'teacher') {
     if (page === 'lesson') return (
-      <LessonPage lesson={pageData} profile={profile} isTeacher={true}
+      <LessonRouter lesson={pageData} profile={profile} isTeacher={true}
         sessionId={liveSessionId} onBack={() => navigate('home')} />
     )
     if (page === 'review') return <ReviewPage onBack={() => navigate('home')} />
@@ -79,7 +79,7 @@ export default function App() {
 
   if (profile.role === 'student') {
     if (page === 'lesson') return (
-      <LessonPage lesson={pageData} profile={profile} isTeacher={false}
+      <LessonRouter lesson={pageData} profile={profile} isTeacher={false}
         sessionId={liveSessionId} onBack={() => navigate('home')} />
     )
     return <StudentHome profile={profile} navigate={navigate} openLesson={async (lesson) => {

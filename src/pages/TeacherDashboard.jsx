@@ -73,7 +73,7 @@ export default function TeacherDashboard({ profile, navigate }) {
                       </div>
                       <button onClick={() => navigate('lesson', lesson)}
                         style={{ fontSize:12, padding:'6px 14px', borderRadius:8, border:`0.5px solid ${mc.border}`, background:mc.bg, color:mc.text, cursor:'pointer', fontWeight:500 }}>
-                        {lesson.week === 1 ? 'Abrir aula →' : 'Em breve'}
+                        {lesson.week <= 1 ? 'Abrir aula →' : 'Em breve'}
                       </button>
                     </div>
                   ))}
