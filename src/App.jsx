@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './pages/Login'
 import TeacherDashboard from './pages/TeacherDashboard'
-import LessonRunner from './pages/LessonRunner'
+import LessonPage from './pages/LessonPage'
 import StudentHome from './pages/StudentHome'
 import StudentOutput from './pages/StudentOutput'
 import ReviewPage from './pages/ReviewPage'
@@ -13,6 +13,7 @@ export default function App() {
   const [page, setPage] = useState('home')
   const [pageData, setPageData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [liveSessionId, setLiveSessionId] = useState(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -20,7 +21,7 @@ export default function App() {
       if (session) loadProfile(session.user.id)
       else setLoading(false)
     })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setSession(session)
       if (session) loadProfile(session.user.id)
       else { setProfile(null); setLoading(false) }
@@ -34,7 +35,27 @@ export default function App() {
     setLoading(false)
   }
 
-  const navigate = (p, data = null) => { setPage(p); setPageData(data) }
+  const navigate = (p, data=null) => { setPage(p); setPageData(data) }
+
+  async function openLesson(lesson) {
+    const { data: { user } } = await supabase.auth.getUser()
+    const { data: students } = await supabase.from('profiles').select('id').eq('role','student').limit(1)
+    const studentId = students?.[0]?.id
+    let sid = null
+    if (studentId) {
+      const { data: existing } = await supabase.from('lesson_sessions')
+        .select('id').eq('lesson_id', lesson.id).eq('is_active', true).maybeSingle()
+      if (existing) { sid = existing.id }
+      else {
+        const { data: created } = await supabase.from('lesson_sessions')
+          .insert({ teacher_id: user.id, student_id: studentId, lesson_id: lesson.id, current_segment: 0 })
+          .select('id').single()
+        sid = created?.id
+      }
+    }
+    setLiveSessionId(sid)
+    navigate('lesson', lesson)
+  }
 
   if (loading) return (
     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', fontFamily:'system-ui' }}>
@@ -48,14 +69,25 @@ export default function App() {
   if (!session || !profile) return <Login onLogin={loadProfile} />
 
   if (profile.role === 'teacher') {
-    if (page === 'lesson') return <LessonRunner lesson={pageData} profile={profile} onBack={() => navigate('home')} />
+    if (page === 'lesson') return (
+      <LessonPage lesson={pageData} profile={profile} isTeacher={true}
+        sessionId={liveSessionId} onBack={() => navigate('home')} />
+    )
     if (page === 'review') return <ReviewPage onBack={() => navigate('home')} />
-    return <TeacherDashboard profile={profile} navigate={navigate} />
+    return <TeacherDashboard profile={profile} navigate={(p,d) => p==='lesson' ? openLesson(d) : navigate(p,d)} />
   }
 
   if (profile.role === 'student') {
-    if (page === 'output') return <StudentOutput lesson={pageData} profile={profile} onBack={() => navigate('home')} />
-    return <StudentHome profile={profile} navigate={navigate} />
+    if (page === 'lesson') return (
+      <LessonPage lesson={pageData} profile={profile} isTeacher={false}
+        sessionId={liveSessionId} onBack={() => navigate('home')} />
+    )
+    return <StudentHome profile={profile} navigate={navigate} openLesson={async (lesson) => {
+      const { data: s } = await supabase.from('lesson_sessions')
+        .select('id').eq('lesson_id', lesson.id).eq('is_active', true).maybeSingle()
+      setLiveSessionId(s?.id || null)
+      navigate('lesson', lesson)
+    }} />
   }
 
   return null
